@@ -2,6 +2,7 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const app = express();
 
+require("dotenv").config();  // load .env file
 app.use(express.json({ limit: "50mb" }));
 
 app.post("/send", async (req, res) => {
@@ -10,13 +11,13 @@ app.post("/send", async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "YOUR_EMAIL@gmail.com",
-            pass: "YOUR_APP_PASSWORD"
+            user: process.env.EMAIL_USER,       // safe
+            pass: process.env.EMAIL_PASSWORD    // safe
         }
     });
 
     let mailOptions = {
-        from: "YOUR_EMAIL@gmail.com",
+        from: process.env.EMAIL_USER,
         to,
         subject,
         text,
